@@ -22,7 +22,6 @@ export const Streamline = (props: StreamlineProps) => {
       ...StreamlineDefaults,
       ...props,
     } as Props;
-  console.log("printing once");
   return (
     <section className="px-[5%] py-16 md:py-24 lg:py-28 ">
       <div className="container">

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button, Input, Label } from "@relume_io/relume-ui";
 import type { ImageProps, ButtonProps } from "@relume_io/relume-ui";
 import { BiLogoGoogle } from "react-icons/bi";
+import { useAuth } from "@/app/context/AuthContext";
 
 type Props = {
   logo: ImageProps;
@@ -43,10 +44,18 @@ export default function Signup(props: SignupProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { onSignup, isLoading, isError, user } = useAuth();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log({ name, email, password });
+
+    onSignup({ name, email, password })
+      .then(() => {
+        console.log("Success in signup");
+      })
+      .catch((err) => {
+        console.error("Error in signup:", err);
+      });
   };
 
   return (

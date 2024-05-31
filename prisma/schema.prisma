@@ -12,3 +12,112 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum RoleType {
+  USER
+  ADMIN
+  SUPERADMIN
+}
+
+model User {
+  id                  String           @id @default(uuid())
+  name                String
+  email               String           @unique
+  password            String
+  pictureUrl          String?
+  roles               UserRole[]
+  assignedAssessments UserAssessment[]
+  userImages          UserImage[]
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  Assessment          Assessment[]
+  UserAnswer          UserAnswer[]
+}
+
+model Role {
+  id        String     @id @default(uuid())
+  type      RoleType
+  users     UserRole[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model UserRole {
+  userId    String
+  roleId    String
+  user      User     @relation(fields: [userId], references: [id])
+  role      Role     @relation(fields: [roleId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@id([userId, roleId])
+}
+
+model UserImage {
+  id        String   @id @default(uuid())
+  userId    String
+  imageUrl  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Question {
+  id              String               @id @default(uuid())
+  text            String
+  answers         Json
+  correctAnswerId String
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @default(now())
+  assessments     AssessmentQuestion[]
+  UserAnswer      UserAnswer[]
+}
+
+model Assessment {
+  id              String               @id @default(uuid())
+  title           String
+  description     String
+  questions       AssessmentQuestion[]
+  assignedToUsers UserAssessment[]
+  createdBy       User                 @relation(fields: [createdById], references: [id])
+  createdById     String
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @default(now())
+  UserAnswer      UserAnswer[]
+}
+
+model AssessmentQuestion {
+  assessmentId String
+  questionId   String
+  assessment   Assessment @relation(fields: [assessmentId], references: [id])
+  question     Question   @relation(fields: [questionId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now())
+
+  @@id([assessmentId, questionId])
+}
+
+model UserAssessment {
+  userId       String
+  assessmentId String
+  status       String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now())
+  user         User       @relation(fields: [userId], references: [id])
+  assessment   Assessment @relation(fields: [assessmentId], references: [id])
+
+  @@id([userId, assessmentId])
+}
+
+model UserAnswer {
+  id               String     @id @default(uuid())
+  userId           String
+  questionId       String
+  assessmentId     String
+  selectedAnswerId String
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @default(now())
+  user             User       @relation(fields: [userId], references: [id])
+  question         Question   @relation(fields: [questionId], references: [id])
+  assessment       Assessment @relation(fields: [assessmentId], references: [id])
+}
