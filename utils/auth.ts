@@ -10,6 +10,7 @@ export interface IUserToken {
     id: string;
     name: string;
     email: string;
+    pictureUrl?: string;
 }
 
 export async function hashPassword(password: string): Promise<string> {

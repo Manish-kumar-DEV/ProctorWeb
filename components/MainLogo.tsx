@@ -1,10 +1,10 @@
 import Image from "next/image";
 import React from "react";
-import useApplicationTheme from "../hooks/useApplicationTheme";
+import useApplicationTheme from "@/app/hooks/useApplicationTheme";
 import LightLogo from "@/public/Logo_White.png";
 import DarkLogo from "@/public/Logo_Black.png";
 
-function MainLogo() {
+function MainLogo({ showText = true }) {
   const applicationTheme = useApplicationTheme();
   return (
     <div className="flex items-center cursor-pointer">
@@ -14,7 +14,7 @@ function MainLogo() {
         height={50}
         alt={"Website Logo"}
       />
-      <div className="text-2xl">ProctorWeb</div>
+      {showText && <div className="text-2xl">ProctorWeb</div>}
     </div>
   );
 }

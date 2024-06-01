@@ -42,10 +42,10 @@ export const AuthProvider = ({ children }: IAuthProvider): React.ReactNode => {
     const checkAuth = async () => {
       setIsLoading(true);
       try {
-        const session = getSession();
-        if (session) {
-          const user = await decrypt(session);
-          setUser(user);
+        const response = await fetch("/api/auth/session");
+        if (response.ok) {
+          const user = await response.json();
+          setUser(user.sessionData);
           setIsAuthenticated(true);
         } else {
           setIsAuthenticated(false);

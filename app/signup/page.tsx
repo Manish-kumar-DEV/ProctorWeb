@@ -5,6 +5,7 @@ import { Button, Input, Label } from "@relume_io/relume-ui";
 import type { ImageProps, ButtonProps } from "@relume_io/relume-ui";
 import { BiLogoGoogle } from "react-icons/bi";
 import { useAuth } from "@/app/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 type Props = {
   logo: ImageProps;
@@ -44,6 +45,7 @@ export default function Signup(props: SignupProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
   const { onSignup, isLoading, isError, user } = useAuth();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -52,6 +54,7 @@ export default function Signup(props: SignupProps) {
     onSignup({ name, email, password })
       .then(() => {
         console.log("Success in signup");
+        router.push("/dashboard");
       })
       .catch((err) => {
         console.error("Error in signup:", err);
@@ -182,5 +185,5 @@ export const SignupDefaults: SignupProps = {
     text: "Log in",
     url: "#",
   },
-  footerText: "© 2024 Relume",
+  footerText: "© 2024 ProctorWeb",
 };
