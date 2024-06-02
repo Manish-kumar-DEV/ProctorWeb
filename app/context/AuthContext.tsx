@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
-import { IUserToken, decrypt, getSession, removeSession } from "@/utils/auth";
+import { IUserToken, removeSession } from "@/utils/auth";
 import { useRouter } from "next/navigation";
 
 interface IAuthContext {
@@ -15,6 +15,7 @@ interface IAuthContext {
     email: string;
     password: string;
   }) => Promise<void>;
+  userDataSetter: (key: string, value: any) => void;
 }
 
 export const AuthContext = createContext<IAuthContext>({
@@ -25,6 +26,7 @@ export const AuthContext = createContext<IAuthContext>({
   onSignup: () => Promise.resolve(),
   onLogin: () => Promise.resolve(),
   onLogout: () => {},
+  userDataSetter: () => {},
 });
 interface IAuthProvider {
   children: React.ReactNode;
@@ -61,6 +63,13 @@ export const AuthProvider = ({ children }: IAuthProvider): React.ReactNode => {
 
     checkAuth();
   }, []);
+
+  const userDataSetter = (key: string, value: any) => {
+    setUser((prevUser: any) => ({
+      ...prevUser,
+      [key]: value,
+    }));
+  };
 
   const onSignup = async ({
     name,
@@ -101,17 +110,53 @@ export const AuthProvider = ({ children }: IAuthProvider): React.ReactNode => {
   const onLogin = async (email: string, password: string): Promise<void> => {
     setIsLoading(true);
     try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        const user = await response.json();
+        setUser(user);
+        setIsAuthenticated(true);
+
+        const redirectUrl =
+          new URL(window.location.href).searchParams.get("redirect") ||
+          "/dashboard";
+        router.replace(redirectUrl);
+      } else {
+        setIsError(true);
+      }
     } catch (error) {
+      console.error("Error during login:", error);
+      setIsError(true);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const onLogout = () => {
-    removeSession();
-    setUser(null);
-    setIsAuthenticated(false);
-    router.push("/login");
+  const onLogout = async (): Promise<void> => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/auth/logout", {
+        method: "GET",
+      });
+
+      if (response.ok) {
+        removeSession();
+        setUser(null);
+        setIsAuthenticated(false);
+        router.replace("/login");
+      } else {
+        setIsError(true);
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -121,6 +166,7 @@ export const AuthProvider = ({ children }: IAuthProvider): React.ReactNode => {
         isAuthenticated,
         isLoading,
         isError,
+        userDataSetter,
         onSignup,
         onLogin,
         onLogout,

@@ -6,6 +6,8 @@ import type { ImageProps, ButtonProps } from "@relume_io/relume-ui";
 import { BiLogoGoogle } from "react-icons/bi";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
+import MainLogo from "@/components/MainLogo";
+import Link from "next/link";
 
 type Props = {
   logo: ImageProps;
@@ -46,7 +48,7 @@ export default function Signup(props: SignupProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const { onSignup, isLoading, isError, user } = useAuth();
+  const { onSignup } = useAuth();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -65,9 +67,7 @@ export default function Signup(props: SignupProps) {
     <section>
       <div className="relative grid min-h-screen grid-cols-1 items-stretch justify-center overflow-auto lg:grid-cols-2">
         <div className="absolute bottom-auto left-0 right-0 top-0 z-10 flex h-16 w-full items-center justify-center px-[5%] md:h-18 lg:justify-between">
-          <a href={logoLink} className="focus-visible:outline-none">
-            <img src={logo.src} alt={logo.alt} />
-          </a>
+          <MainLogo />
         </div>
         <div className="relative mx-[5vw] flex items-center justify-center pb-16 pt-20 md:pb-20 md:pt-24 lg:py-20">
           <div className="container max-w-sm">
@@ -136,12 +136,12 @@ export default function Signup(props: SignupProps) {
             </form>
             <div className="mt-5 inline-flex w-full items-center justify-center gap-x-1 text-center md:mt-6">
               <p>{logInText}</p>
-              <a
+              <Link
                 href={logInLink.url}
                 className="underline focus-visible:outline-none"
               >
                 {logInLink.text}
-              </a>
+              </Link>
             </div>
           </div>
         </div>

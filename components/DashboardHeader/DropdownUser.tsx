@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useAuth } from "@/app/context/AuthContext";
+import { Avatar } from "@nextui-org/react";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -9,6 +9,13 @@ const DropdownUser = () => {
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+  const { onLogout } = useAuth();
+
+  const handleLogOut = () => {
+    if (window.confirm("Are you sure you want to log out?")) {
+      onLogout();
+    }
+  };
 
   // close on click outside
   useEffect(() => {
@@ -52,16 +59,10 @@ const DropdownUser = () => {
         </span>
 
         <span className="h-12 w-12 rounded-full">
-          <Image
-            width={112}
-            height={112}
-            src={`${
-              user?.pictureUrl ? user.pictureUrl : "/images/user/user-01.png"
-            }`}
-            style={{
-              width: "auto",
-              height: "auto",
-            }}
+          <Avatar
+            showFallback
+            name={user?.name}
+            src={`${user?.pictureUrl && user.pictureUrl}`}
             alt="User"
           />
         </span>
@@ -84,11 +85,12 @@ const DropdownUser = () => {
       </Link>
 
       {/* <!-- Dropdown Start --> */}
+
       <div
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
-        className={`absolute right-0 mt-4 flex w-60 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${
+        className={`absolute z-10 border-gray-200 right-0 mt-4 flex w-60 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${
           dropdownOpen === true ? "block" : "hidden"
         }`}
       >
@@ -141,7 +143,7 @@ const DropdownUser = () => {
           </li>
           <li>
             <Link
-              href="/settings"
+              href="/dashboard/settings"
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
             >
               <svg
@@ -165,7 +167,10 @@ const DropdownUser = () => {
             </Link>
           </li>
         </ul>
-        <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+        <button
+          onClick={handleLogOut}
+          className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+        >
           <svg
             className="fill-current"
             width="22"

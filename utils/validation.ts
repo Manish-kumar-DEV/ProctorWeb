@@ -49,57 +49,36 @@ export async function getSession() {
 
 export async function updateSession(request: NextRequest) {
     const session = request.cookies.get("authSession")?.value;
-    if (!session) return;
 
-    const parsed = await decrypt(session);
+    if (!session) return NextResponse.redirect(new URL('/login', request.url));
 
-    const expiryThreshold = 5 * 60 * 1000; // 5 minutes
-    const currentTime = Date.now();
-    const sessionExpiryTime = parsed.exp * 1000;
+    try {
+        const parsed = await decrypt(session);
 
-    if (sessionExpiryTime - currentTime < expiryThreshold) {
-        parsed.exp = Math.floor(currentTime / 1000) + (MAX_COOKIE_AGE / 1000);
-        const newToken = await encrypt(parsed);
+        const expiryThreshold = 5 * 60 * 1000; // 5 minutes
+        const currentTime = Date.now();
+        const sessionExpiryTime = parsed.exp * 1000;
 
-        const res = NextResponse.next();
-        res.cookies.set({
-            name: 'authSession',
-            value: newToken,
-            httpOnly: true,
-            expires: new Date(currentTime + MAX_COOKIE_AGE),
-        });
-        return res;
+        if (sessionExpiryTime - currentTime < expiryThreshold) {
+            parsed.exp = Math.floor(currentTime / 1000) + (MAX_COOKIE_AGE / 1000);
+            const newToken = await encrypt(parsed);
+
+            const res = NextResponse.next();
+            res.cookies.set({
+                name: 'authSession',
+                value: newToken,
+                httpOnly: true,
+                expires: new Date(currentTime + MAX_COOKIE_AGE),
+            });
+            return res;
+        }
+        return NextResponse.next();
+    } catch (error) {
+        console.error('Error decrypting session:', error);
+        return NextResponse.redirect(new URL('/login', request.url));
     }
-    return NextResponse.next();
-
-    // parsed.expires = new Date(Date.now() + MAX_COOKIE_AGE);
-    // const res = NextResponse.next();
-    // console.log('Going to set the cookie')
-    // res.cookies.set({
-    //     name: "authSession",
-    //     value: await encrypt(parsed),
-    //     httpOnly: true,
-    //     expires: parsed.expires,
-    // });
-    // return res;
 }
 
-
-//using JWT -> not using this one currently
-// export const generateToken = (user: IUserToken): string => {
-//     return jwt.sign(user, JWT_SECRET, { expiresIn: "1h" });
-// };
-// export function validateToken(req: NextRequest) {
-//     const cookies = parse(req.headers.get('cookie') || '');
-//     const token = cookies.token;
-
-//     if (!token) {
-//         return { isValid: false, user: null };
-//     }
-//     try {
-//         const user = jwt.verify(token, JWT_SECRET);
-//         return { isValid: true, user };
-//     } catch (error) {
-//         return { isValid: false, user: null };
-//     }
-// }
+export function removeSession() {
+    cookies().delete("authSession");
+}

@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
         });
 
         const expires = new Date(Date.now() + MAX_COOKIE_AGE);
-        const sessionData = { id: user.id, name: user.name, email: user.email }
+        const sessionData = { id: user.id, name: user.name, email: user.email, pictureUrl: user.pictureUrl }
         const session = await encrypt({ sessionData, expires });
 
         const isDev = process.env.NODE_ENV === 'development';

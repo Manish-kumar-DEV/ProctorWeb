@@ -6,10 +6,9 @@ import type { ImageProps, ButtonProps } from "@relume_io/relume-ui";
 import { AnimatePresence, motion } from "framer-motion";
 import { RxChevronDown } from "react-icons/rx";
 import ThemeSwitch from "./ThemeSwitch";
-
-import useApplicationTheme from "../hooks/useApplicationTheme";
 import MainLogo from "./MainLogo";
 import Link from "next/link";
+import { useAuth } from "@/app/context/AuthContext";
 
 type LinkProps = {
   title: string;
@@ -87,7 +86,7 @@ export const Navbar = (props: NavbarProps) => {
     ...NavbarDefaults,
     ...props,
   } as Props;
-
+  const { isAuthenticated } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -135,12 +134,12 @@ export const Navbar = (props: NavbarProps) => {
               {link.subLinks && link.subLinks.length > 0 ? (
                 <NavItemDropdown subLinks={link.subLinks} title={link.title} />
               ) : (
-                <a
+                <Link
                   href={link.url}
                   className="relative mx-auto block py-3 text-md ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-primary focus-visible:ring-offset-2 lg:px-4 lg:py-2 lg:text-base"
                 >
                   {link.title}
-                </a>
+                </Link>
               )}
             </div>
           ))}
@@ -149,20 +148,26 @@ export const Navbar = (props: NavbarProps) => {
           </div>
 
           <div className="mt-6 flex flex-col items-center gap-4 lg:ml-4 lg:mt-0 lg:flex-row">
-            {buttons?.map((button, index) => (
-              <Link
-                href={`${button.title === "Login" ? "/login" : "/signup"}`}
-                key={`${button.title}-${index}`}
-              >
-                <Button
-                  className="w-full"
-                  variant={button.variant}
-                  size={button.size}
+            {!isAuthenticated ? (
+              buttons?.map((button, index) => (
+                <Link
+                  href={`${button.title === "Login" ? "/login" : "/signup"}`}
+                  key={`${button.title}-${index}`}
                 >
-                  {button.title}
-                </Button>
+                  <Button
+                    className="w-full"
+                    variant={button.variant}
+                    size={button.size}
+                  >
+                    {button.title}
+                  </Button>
+                </Link>
+              ))
+            ) : (
+              <Link href="/dashboard">
+                <Button>Dashboard</Button>
               </Link>
-            ))}
+            )}
           </div>
         </motion.div>
       </div>
@@ -227,12 +232,12 @@ const NavItemDropdown = ({
                 key={`${subLink.title}-${index}`}
                 className="relative mx-auto whitespace-nowrap py-3 pl-[5%] text-left align-top text-md lg:px-4 lg:py-2 lg:text-base"
               >
-                <a
+                <Link
                   href={subLink.url}
                   className="ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-primary focus-visible:ring-offset-2"
                 >
                   {subLink.title}
-                </a>
+                </Link>
               </li>
             ))}
           </motion.ul>

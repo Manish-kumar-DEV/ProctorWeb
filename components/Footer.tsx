@@ -9,6 +9,7 @@ import {
   BiLogoLinkedinSquare,
   BiLogoYoutube,
 } from "react-icons/bi";
+import Link from "next/link";
 
 type Links = {
   title: string;
@@ -91,13 +92,13 @@ export const Footer = (props: FooterProps) => {
                       key={`${link.title}-${linkIndex}`}
                       className="py-2 text-sm"
                     >
-                      <a
+                      <Link
                         href={link.url}
                         className="flex items-center gap-3 focus-visible:outline-none"
                       >
                         {link.icon && <span>{link.icon}</span>}
                         <span>{link.title}</span>
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -111,9 +112,9 @@ export const Footer = (props: FooterProps) => {
           <ul className="grid grid-flow-row grid-cols-[max-content] justify-center gap-x-0 gap-y-4 text-sm md:grid-flow-col md:gap-x-6 md:gap-y-0">
             {footerLinks?.map((link, index) => (
               <li key={`${link.title}-${index}`} className="underline">
-                <a href={link?.url} className="focus-visible:outline-none">
+                <Link href={link?.url} className="focus-visible:outline-none">
                   {link?.title}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -139,12 +140,12 @@ export const FooterDefaults: FooterProps = {
   termsAndConditions: (
     <p className="text-xs">
       By subscribing you agree to with our{" "}
-      <a
+      <Link
         href="#"
         className="underline decoration-border-primary focus-visible:outline-none"
       >
         Privacy Policy
-      </a>{" "}
+      </Link>{" "}
       and provide consent to receive updates from our company.
     </p>
   ),
