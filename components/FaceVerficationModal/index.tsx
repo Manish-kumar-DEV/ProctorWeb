@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as faceapi from "face-api.js";
-import { Button } from "@nextui-org/react";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from "@nextui-org/react";
 import { FACE_MATCHER_THRESHOLD, VALID_IMAGE_TYPES } from "@/utils/constants";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -182,10 +189,8 @@ const FaceVerificationModal = ({ user, onSuccess, onFailure }: any) => {
         }
         if (videoRef.current) {
           videoRef.current.removeEventListener("play", handlePlay);
-          console.log("Removing event listener faceverification");
           if (videoRef.current.srcObject) {
             const stream = videoRef.current.srcObject as MediaStream;
-            console.log("Removing stream contents faceverification");
             stream.getTracks().forEach((track) => track.stop());
           }
         }
@@ -298,7 +303,9 @@ const FaceVerificationModal = ({ user, onSuccess, onFailure }: any) => {
         </div>
         <div
           className={`w-1/2 border rounded-md overflow-hidden ${
-            isFaceVerified && "border-green-400 border-2"
+            isFaceVerified
+              ? "border-green-400 border-2"
+              : "border-red-400 border-2"
           }`}
         >
           <video ref={videoRef} autoPlay muted className="w-full h-auto" />

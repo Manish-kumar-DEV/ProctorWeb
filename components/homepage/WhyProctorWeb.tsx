@@ -51,7 +51,7 @@ export const WhyProctorWeb = (props: WhyProctorWebProps) => {
           </div>
           <div>
             <img
-              src={image?.src}
+              src={"/At the office-amico.png"}
               className="w-full object-cover"
               alt={image?.alt}
             />

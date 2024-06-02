@@ -80,7 +80,7 @@ export const StreamlineDefaults: StreamlineProps = {
   sections: [
     {
       image: {
-        src: "https://relume-assets.s3.amazonaws.com/placeholder-image-landscape.svg",
+        src: "/Data report-pana.png",
         alt: "Placeholder image 1",
       },
 
@@ -90,7 +90,7 @@ export const StreamlineDefaults: StreamlineProps = {
     },
     {
       image: {
-        src: "https://relume-assets.s3.amazonaws.com/placeholder-image-landscape.svg",
+        src: "/Code typing-rafiki.png",
         alt: "Placeholder image 2",
       },
 
@@ -100,7 +100,7 @@ export const StreamlineDefaults: StreamlineProps = {
     },
     {
       image: {
-        src: "https://relume-assets.s3.amazonaws.com/placeholder-image-landscape.svg",
+        src: "/Consulting-amico.png",
         alt: "Placeholder image 3",
       },
 

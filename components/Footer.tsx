@@ -10,6 +10,7 @@ import {
   BiLogoYoutube,
 } from "react-icons/bi";
 import Link from "next/link";
+import MainLogo from "./MainLogo";
 
 type Links = {
   title: string;
@@ -60,7 +61,8 @@ export const Footer = (props: FooterProps) => {
         <div className="grid grid-cols-1 gap-x-[8vw] gap-y-12 pb-12 md:gap-y-16 md:pb-18 lg:grid-cols-[0.75fr,1fr] lg:gap-y-4 lg:pb-20">
           <div className="flex flex-col">
             <div className="mb-5 md:mb-6">
-              <img src={image?.src} alt={image?.alt} className="inline-block" />
+              {/* <img src={image?.src} alt={image?.alt} className="inline-block" /> */}
+              <MainLogo />
             </div>
             <p className="mb-5 md:mb-6">{newsletterDescription}</p>
             <div className="max-w-md">

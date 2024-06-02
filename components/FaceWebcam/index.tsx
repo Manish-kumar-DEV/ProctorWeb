@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as faceapi from "face-api.js";
-import { Button } from "@nextui-org/react";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from "@nextui-org/react";
 import { FACE_MATCHER_THRESHOLD, VALID_IMAGE_TYPES } from "@/utils/constants";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -52,6 +59,7 @@ const FaceWebcam = () => {
     );
 
     setFaceMatcher(matcher);
+    console.log("The matcher is", matcher);
     setIsLoading(false);
   }, [user]);
 
@@ -113,7 +121,7 @@ const FaceWebcam = () => {
           width: videoRef.current?.videoWidth || 0,
           height: videoRef.current?.videoHeight || 0,
         };
-        // if (intervalRef.current) clearInterval(intervalRef.current);
+        if (intervalRef.current) clearInterval(intervalRef.current);
         intervalRef.current = setInterval(async () => {
           if (videoRef.current) {
             const detections = await faceapi
@@ -164,19 +172,18 @@ const FaceWebcam = () => {
           clearInterval(intervalRef.current);
         }
         if (videoRef.current) {
-          console.log("Removing event listener FaceWebcam");
           videoRef.current.removeEventListener("play", handlePlay);
 
           if (videoRef.current.srcObject) {
             const stream = videoRef.current.srcObject as MediaStream;
-            console.log("Removing stream contents FaceWebcam");
+
             stream.getTracks().forEach((track) => track.stop());
           }
         }
       };
     }
   }, [faceMatcher]);
-  console.log("User data", user);
+
   return (
     <div className=" h-fit">
       <div className="flex flex-col gap-2 md:flex-row w-full">
@@ -187,6 +194,26 @@ const FaceWebcam = () => {
               : "border-red-400 border-4"
           }`}
         >
+          <Modal
+            size="sm"
+            backdrop={"blur"}
+            className="pb-4 pt-2"
+            hideCloseButton={true}
+            isOpen={!isFaceVerified}
+          >
+            <ModalContent>
+              <>
+                <ModalBody>
+                  <div className="text-lg font-semibold">Face Mismatch!</div>
+                  <div>
+                    The profile picture uploaded and the person in the webcame
+                    are not same!
+                  </div>
+                  <div>Please wait for some time.</div>
+                </ModalBody>
+              </>
+            </ModalContent>
+          </Modal>
           <video ref={videoRef} autoPlay muted className="w-full h-auto" />
         </div>
       </div>

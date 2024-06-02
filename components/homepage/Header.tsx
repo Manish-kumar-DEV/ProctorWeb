@@ -1,11 +1,13 @@
 "use client";
 
-import { Button, Input } from "@relume_io/relume-ui";
 import type { ButtonProps, ImageProps } from "@relume_io/relume-ui";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { useRef } from "react";
 import clsx from "clsx";
 import { FlipWords } from "../FlipWords";
+import { Button } from "@nextui-org/react";
+import bgBackground from "@/public/abstract-gradient-neon-lights.jpg";
+import { useTheme } from "next-themes";
 
 type Props = {
   heading?: string;
@@ -21,7 +23,8 @@ export const Header = (props: HeaderProps) => {
     ...HeaderDefaults,
     ...props,
   } as Props;
-
+  const { theme } = useTheme();
+  const isLightMode = theme === "light";
   const transformRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: transformRef });
   const animatedScrollYProgress = useSpring(scrollYProgress, {
@@ -42,8 +45,13 @@ export const Header = (props: HeaderProps) => {
     <section
       ref={transformRef}
       className="relative h-[150vh] px-[5%] md:h-[300vh]"
+      style={{
+        backgroundImage: !isLightMode ? `url(${bgBackground.src})` : "",
+        backgroundSize: "cover",
+        backgroundPosition: "90% 90%",
+      }}
     >
-      <div className="sticky top-0 h-[100vh] overflow-hidden">
+      <div className="sticky top-0 h-[100vh] overflow-hidden ">
         <div className="absolute bottom-0 left-0 right-auto top-0 z-10">
           <motion.div
             className="flex flex-col gap-[26vw] pt-[70vh]"
@@ -107,17 +115,15 @@ export const Header = (props: HeaderProps) => {
             </h1>
             <p className="relative z-20 md:text-md ">{description}</p>
             <div className="relative z-20 mt-6 flex items-center justify-center gap-x-4 md:mt-8">
-              {buttons?.map((button, index) => (
-                <Button
-                  key={`${button.title}-${index}`}
-                  variant={button.variant}
-                  size={button.size}
-                  iconRight={button.iconRight}
-                  iconLeft={button.iconLeft}
-                >
-                  {button.title}
-                </Button>
-              ))}
+              <Button
+                className={`bg-primary-200 dark:bg-primary-500 text-black dark:text-white`}
+                radius="none"
+              >
+                Learn More
+              </Button>
+              <Button className={`bg-white dark:text-black`} radius="none">
+                Sign Up
+              </Button>
             </div>
           </div>
         </div>
@@ -134,36 +140,37 @@ export const HeaderDefaults: HeaderProps = {
   buttons: [
     {
       title: "Learn More",
+      bgColor: "bg-primary-200",
     },
     {
       title: "Sign Up",
-      variant: "secondary",
+      bgColor: "bg-white",
     },
   ],
   images: [
     {
-      src: "https://relume-assets.s3.amazonaws.com/placeholder-image.svg",
+      src: "/Revenue-cuate.png",
       alt: "Placeholder image 1",
     },
     {
-      src: "https://relume-assets.s3.amazonaws.com/placeholder-image.svg",
+      src: "/tech company-rafiki.png",
       alt: "Placeholder image 2",
     },
     {
-      src: "https://relume-assets.s3.amazonaws.com/placeholder-image.svg",
+      src: "/Research paper-pana.png",
       alt: "Placeholder image 3",
     },
     {
-      src: "https://relume-assets.s3.amazonaws.com/placeholder-image.svg",
+      src: "/Programming-amico.png",
       alt: "Placeholder image 4",
     },
     {
-      src: "https://relume-assets.s3.amazonaws.com/placeholder-image.svg",
+      src: "/Programming-amico.png",
       alt: "Placeholder image 5",
     },
-    {
-      src: "https://relume-assets.s3.amazonaws.com/placeholder-image.svg",
-      alt: "Placeholder image 6",
-    },
+    // {
+    //   src: "/At the office-amico.png",
+    //   alt: "Placeholder image 6",
+    // },
   ],
 };

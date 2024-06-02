@@ -22,7 +22,8 @@ export async function POST(req: NextRequest) {
         const user = await prisma.user.findUnique({ where: { id: userId } });
         if (!user) {
             console.log("User not found for userId:", userId);
-            return NextResponse.json({ error: 'User not found' }, { status: 404 });
+            cookies().delete("authSession");
+            return NextResponse.redirect(new URL('/login', req.url));
         }
 
         const buffer = Buffer.from(await file.arrayBuffer());

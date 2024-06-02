@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { Button, Input, Label } from "@relume_io/relume-ui";
+import { useEffect, useState } from "react";
+import { Button } from "@nextui-org/react";
+import { Button as RelumeButton, Input, Label } from "@relume_io/relume-ui";
 import type { ImageProps, ButtonProps } from "@relume_io/relume-ui";
 import { BiLogoGoogle } from "react-icons/bi";
 import MainLogo from "@/components/MainLogo";
 import { useAuth } from "../context/AuthContext";
 import Link from "next/link";
+import { Bounce, toast } from "react-toastify";
 
 type Props = {
   logo: ImageProps;
@@ -51,13 +53,31 @@ export default function Login(props: LoginProps) {
     event.preventDefault();
 
     onLogin(email, password)
-      .then(() => {
-        console.log("login successfull");
+      .then((e) => {
+        console.log("login successfull", e);
       })
       .catch((err) => {
         console.error("login error", err);
       });
   };
+
+  useEffect(() => {
+    if (isError) {
+      toast.error("Error in Login! Check credentials", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      setEmail("");
+      setPassword("");
+    }
+  }, [isError]);
 
   return (
     <section className="px-[5%]">
@@ -110,14 +130,13 @@ export default function Login(props: LoginProps) {
             </div>
             <div className="grid-col-1 grid gap-4">
               <Button
-                variant={logInButton.variant}
-                size={logInButton.size}
-                iconLeft={logInButton.iconLeft}
-                iconRight={logInButton.iconRight}
+                radius="none"
+                type="submit"
+                className={`bg-primary-200 w-full dark:bg-primary-500 text-black dark:text-white text-md py-6`}
               >
                 {logInButton.title}
               </Button>
-              <Button
+              <RelumeButton
                 variant={logInWithGoogleButton.variant}
                 size={logInWithGoogleButton.size}
                 iconLeft={logInWithGoogleButton.iconLeft}
@@ -125,7 +144,7 @@ export default function Login(props: LoginProps) {
                 className="gap-x-3"
               >
                 {logInWithGoogleButton.title}
-              </Button>
+              </RelumeButton>
             </div>
           </form>
           <div className="mt-5 w-full text-center md:mt-6">

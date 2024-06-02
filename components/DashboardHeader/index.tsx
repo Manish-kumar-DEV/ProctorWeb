@@ -55,9 +55,7 @@ const DashboardHeader = (props: {
           </button>
           {/* <!-- Hamburger Toggle BTN --> */}
 
-          <Link className="block flex-shrink-0 lg:hidden" href="/">
-            <MainLogo showText={false} />
-          </Link>
+          <MainLogo showText={false} />
         </div>
 
         <div className="hidden sm:block">

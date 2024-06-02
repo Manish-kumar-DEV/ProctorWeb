@@ -30,10 +30,8 @@ const Assessments = () => {
   const [assessments, setAssessments] = useState<Assessment[] | null>(null);
 
   const handleAttemptQuiz = (id: string) => {
-    if (!user?.pictureUrl) {
-      onOpen();
-    } else {
-      onOpen();
+    onOpen();
+    if (user?.pictureUrl) {
       setShowFaceVerification(true);
     }
   };

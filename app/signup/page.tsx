@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Input, Label } from "@relume_io/relume-ui";
+import { Button } from "@nextui-org/react";
+import { Button as RelumeButton, Input, Label } from "@relume_io/relume-ui";
 import type { ImageProps, ButtonProps } from "@relume_io/relume-ui";
 import { BiLogoGoogle } from "react-icons/bi";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 import MainLogo from "@/components/MainLogo";
 import Link from "next/link";
+import Image from "next/image";
 
 type Props = {
   logo: ImageProps;
@@ -116,14 +118,14 @@ export default function Signup(props: SignupProps) {
               </div>
               <div className="grid-col-1 grid gap-4">
                 <Button
-                  variant={signUpButton.variant}
-                  size={signUpButton.size}
-                  iconLeft={signUpButton.iconLeft}
-                  iconRight={signUpButton.iconRight}
+                  radius="none"
+                  className={`bg-primary-200 w-full dark:bg-primary-500 text-black dark:text-white text-md py-6`}
+                  // iconLeft={signUpButton.iconLeft}
+                  // iconRight={signUpButton.iconRight}
                 >
                   {signUpButton.title}
                 </Button>
-                <Button
+                <RelumeButton
                   variant={signUpWithGoogleButton.variant}
                   size={signUpWithGoogleButton.size}
                   iconLeft={signUpWithGoogleButton.iconLeft}
@@ -131,7 +133,7 @@ export default function Signup(props: SignupProps) {
                   className="gap-x-3"
                 >
                   {signUpWithGoogleButton.title}
-                </Button>
+                </RelumeButton>
               </div>
             </form>
             <div className="mt-5 inline-flex w-full items-center justify-center gap-x-1 text-center md:mt-6">
@@ -145,11 +147,12 @@ export default function Signup(props: SignupProps) {
             </div>
           </div>
         </div>
-        <div className="hidden bg-background-secondary lg:block">
-          <img
-            src={image.src}
-            alt={image.alt}
-            className="h-full w-full object-cover"
+        <div className="hidden bg-background-secondary lg:block relative">
+          <Image
+            src={"/annie-spratt-hX_hf2lPpUU-unsplash.jpg"}
+            fill={true}
+            objectFit="cover"
+            alt={image?.alt || "signup_page_image"}
           />
         </div>
         <footer className="absolute bottom-0 left-0 right-0 top-auto flex h-16 w-full items-center justify-center pr-[5%] md:h-18 lg:justify-start lg:px-[5%]">
@@ -167,7 +170,7 @@ export const SignupDefaults: SignupProps = {
   },
   logoLink: "#",
   title: "Sign Up",
-  description: "Lorem ipsum dolor sit amet adipiscing elit.",
+  description: "Create an account to start taking assessments",
   signUpButton: {
     title: "Sign up",
   },
@@ -183,7 +186,7 @@ export const SignupDefaults: SignupProps = {
   logInText: "Already have an account?",
   logInLink: {
     text: "Log in",
-    url: "#",
+    url: "/login",
   },
   footerText: "© 2024 ProctorWeb",
 };

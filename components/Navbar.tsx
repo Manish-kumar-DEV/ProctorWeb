@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@relume_io/relume-ui";
+// import { Button } from "@relume_io/relume-ui";
 import type { ImageProps, ButtonProps } from "@relume_io/relume-ui";
 import { AnimatePresence, motion } from "framer-motion";
 import { RxChevronDown } from "react-icons/rx";
@@ -9,6 +9,7 @@ import ThemeSwitch from "./ThemeSwitch";
 import MainLogo from "./MainLogo";
 import Link from "next/link";
 import { useAuth } from "@/app/context/AuthContext";
+import { Button } from "@nextui-org/react";
 
 type LinkProps = {
   title: string;
@@ -90,7 +91,7 @@ export const Navbar = (props: NavbarProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="flex sticky top-0 z-10 w-full items-center border-b border-border-primary bg-white dark:bg-black lg:min-h-16 lg:px-[5%]">
+    <nav className="flex fixed top-0 z-10 w-full items-center shadow-md backdrop-filter backdrop-blur-lg  bg-opacity-30  lg:min-h-16 lg:px-[5%]">
       <div className="size-full lg:flex lg:items-center lg:justify-between">
         <div className="flex min-h-16 items-center justify-between px-[5%] md:min-h-18 lg:min-h-full lg:px-0">
           <MainLogo />
@@ -149,23 +150,29 @@ export const Navbar = (props: NavbarProps) => {
 
           <div className="mt-6 flex flex-col items-center gap-4 lg:ml-4 lg:mt-0 lg:flex-row">
             {!isAuthenticated ? (
-              buttons?.map((button, index) => (
-                <Link
-                  href={`${button.title === "Login" ? "/login" : "/signup"}`}
-                  key={`${button.title}-${index}`}
-                >
-                  <Button
-                    className="w-full"
-                    variant={button.variant}
-                    size={button.size}
-                  >
-                    {button.title}
+              <>
+                <Link href={"/signup"}>
+                  <Button className="w-full bg-white text-black" radius="none">
+                    Sign Up
                   </Button>
                 </Link>
-              ))
+                <Link href={"/login"}>
+                  <Button
+                    className={`bg-primary-200 w-full dark:bg-primary-500 text-black dark:text-white`}
+                    radius="none"
+                  >
+                    Login
+                  </Button>
+                </Link>
+              </>
             ) : (
               <Link href="/dashboard">
-                <Button>Dashboard</Button>
+                <Button
+                  radius="none"
+                  className="bg-primary-200 dark:bg-primary-500 text-black dark:text-white"
+                >
+                  Dashboard
+                </Button>
               </Link>
             )}
           </div>
@@ -253,9 +260,9 @@ export const NavbarDefaults: NavbarProps = {
     alt: "Logo image",
   },
   links: [
-    { title: "Link One", url: "#" },
-    { title: "Link Two", url: "#" },
-    { title: "Link Three", url: "#" },
+    { title: "About Us", url: "#" },
+    { title: "Careers", url: "#" },
+    { title: "Contact Us", url: "#" },
   ],
   buttons: [
     {

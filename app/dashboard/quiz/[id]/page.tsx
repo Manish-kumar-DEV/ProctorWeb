@@ -19,14 +19,12 @@ const QuizPage = ({ params }: any) => {
   const userId = user?.id;
 
   useEffect(() => {
-    console.log("The assessment Id is", assessmentId);
     if (assessmentId) {
       const fetchQuestions = async () => {
         try {
           const response = await fetch(`/api/assessments/${assessmentId}`);
           if (response.ok) {
             const data = await response.json();
-            console.log("XLRI data is", data);
             setQuestions(data.questions);
           } else {
             console.error("Failed to fetch questions");
@@ -41,7 +39,6 @@ const QuizPage = ({ params }: any) => {
   }, [assessmentId]);
 
   const handleAnswerSelect = async (questionId: string, answerId: string) => {
-    console.log("The questionId is", questionId, answerId);
     setSelectedAnswers((prev) => ({ ...prev, [questionId]: answerId }));
 
     try {
