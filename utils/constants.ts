@@ -2,6 +2,15 @@
 
 export const MAX_COOKIE_AGE = 7 * 24 * 60 * 60 * 1000 // 7 days in seconds
 
+export const VALID_IMAGE_TYPES = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/webp"
+]
+
+export const FACE_MATCHER_THRESHOLD = 0.6;
+
 export interface Assessment {
     id: string;
     title: string;

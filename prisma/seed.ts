@@ -40,7 +40,7 @@ async function seedDatabase() {
                 name: "Alice",
                 email: "alice@example.com",
                 password: hashedPassword,
-                pictureUrl: "https://example.com/alice.jpg",
+
             },
         });
 
@@ -49,7 +49,7 @@ async function seedDatabase() {
                 name: "Bob",
                 email: "bob@example.com",
                 password: hashedPassword,
-                pictureUrl: "https://example.com/bob.jpg",
+
             },
         });
 

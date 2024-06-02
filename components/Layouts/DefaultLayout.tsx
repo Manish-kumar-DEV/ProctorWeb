@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import Sidebar from "../Sidebar";
 import DashboardHeader from "../DashboardHeader";
 import { usePathname } from "next/navigation";
+import FaceVerficationModal from "../FaceVerficationModal";
+import FaceWebcam from "../FaceWebcam";
 
 export default function DefaultLayout({
   children,
@@ -35,7 +37,9 @@ export default function DefaultLayout({
           </main>
         </div>
         {isQuizPage && (
-          <div className="h-screen w-72 border border-red-500"></div>
+          <div className="h-screen w-72 p-2">
+            <FaceWebcam />
+          </div>
         )}
       </div>
     </>
