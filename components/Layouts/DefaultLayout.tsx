@@ -2,17 +2,22 @@
 import React, { useState } from "react";
 import Sidebar from "../Sidebar";
 import DashboardHeader from "../DashboardHeader";
+import { usePathname } from "next/navigation";
 
 export default function DefaultLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const isQuizPage = pathname.startsWith("/dashboard/quiz/");
   return (
     <>
       <div className="flex h-screen overflow-hidden">
-        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        {!isQuizPage && (
+          <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        )}
         <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
           <DashboardHeader
             sidebarOpen={sidebarOpen}
@@ -20,9 +25,18 @@ export default function DefaultLayout({
           />
 
           <main>
-            <div className="mx-auto max-w-screen-2xl p-4 pt-0">{children}</div>
+            <div
+              className={`mx-auto max-w-screen-2xl ${
+                isQuizPage ? "p-12" : "p-4"
+              } pt-0 `}
+            >
+              {children}
+            </div>
           </main>
         </div>
+        {isQuizPage && (
+          <div className="h-screen w-72 border border-red-500"></div>
+        )}
       </div>
     </>
   );

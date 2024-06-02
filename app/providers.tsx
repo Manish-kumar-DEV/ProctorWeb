@@ -6,10 +6,10 @@ import { ThemeProvider } from "next-themes";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <NextUIProvider>
+    <NextUIProvider>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <AuthProvider>{children}</AuthProvider>
-      </NextUIProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </NextUIProvider>
   );
 }

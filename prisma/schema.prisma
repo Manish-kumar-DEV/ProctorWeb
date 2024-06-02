@@ -120,4 +120,6 @@ model UserAnswer {
   user             User       @relation(fields: [userId], references: [id])
   question         Question   @relation(fields: [questionId], references: [id])
   assessment       Assessment @relation(fields: [assessmentId], references: [id])
+
+  @@unique([userId, questionId, assessmentId])
 }

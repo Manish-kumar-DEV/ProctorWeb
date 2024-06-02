@@ -2,9 +2,19 @@
 import { Assessment } from "@/utils/constants";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Assessments = () => {
+  const router = useRouter();
   const [assessments, setAssessments] = useState<Assessment[] | null>(null);
+
+  const handleAttemptQuiz = (id: string) => {
+    router.push(`/dashboard/quiz/${id}`);
+  };
+
+  const handleViewDetails = (id: string) => {
+    router.push(`/dashboard/assessments/${id}`);
+  };
 
   useEffect(() => {
     const fetchAssessments = async () => {
@@ -29,6 +39,7 @@ const Assessments = () => {
             <th className="py-2 px-4 border-b">Title</th>
             <th className="py-2 px-4 border-b">Description</th>
             <th className="py-2 px-4 border-b">Actions</th>
+            <th className="py-2 px-4 border-b">Attempt</th>
           </tr>
         </thead>
         <tbody>
@@ -36,13 +47,21 @@ const Assessments = () => {
             <tr key={assessment.id}>
               <td className="py-2 px-4 border-b">{assessment.title}</td>
               <td className="py-2 px-4 border-b">{assessment.description}</td>
-              <td className="py-2 px-4 border-b">
-                <Link
-                  href={`/dashboard/assessments/${assessment.id}`}
-                  className="bg-blue-500 text-white py-1 px-2 rounded"
+              <td className="py-2  border-b">
+                <button
+                  className="bg-blue-500 h-full text-white px-4 py-2 rounded"
+                  onClick={() => handleViewDetails(assessment.id)}
                 >
                   View Details
-                </Link>
+                </button>
+              </td>
+              <td className="py-2  border-b">
+                <button
+                  className="bg-green-500 text-white px-4 py-2 rounded"
+                  onClick={() => handleAttemptQuiz(assessment.id)}
+                >
+                  Attempt Quiz
+                </button>
               </td>
             </tr>
           ))}
