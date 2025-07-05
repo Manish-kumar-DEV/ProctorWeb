@@ -29,7 +29,36 @@ type Props = {
 
 export type SignupProps = React.ComponentPropsWithoutRef<"section"> & Props;
 
-export default function Signup(props: SignupProps) {
+const SignupDefaults: SignupProps = {
+  logo: {
+    src: "https://relume-assets.s3.amazonaws.com/logo-image.svg",
+    alt: "Logo text",
+  },
+  logoLink: "#",
+  title: "Sign Up",
+  description: "Create an account to start taking assessments",
+  signUpButton: {
+    title: "Sign up",
+  },
+  signUpWithGoogleButton: {
+    variant: "secondary",
+    title: "Sign up with Google",
+    iconLeft: <BiLogoGoogle className="size-6" />,
+  },
+  image: {
+    src: "https://relume-assets.s3.amazonaws.com/placeholder-image.svg",
+    alt: "Placeholder image",
+  },
+  logInText: "Already have an account?",
+  logInLink: {
+    text: "Log in",
+    url: "/login",
+  },
+  footerText: "© 2024 ProctorWeb",
+};
+
+export default function Signup() {
+  const props = SignupDefaults;
   const {
     logo,
     logoLink,
@@ -41,10 +70,7 @@ export default function Signup(props: SignupProps) {
     logInText,
     logInLink,
     footerText,
-  } = {
-    ...SignupDefaults,
-    ...props,
-  } as Props;
+  } = props;
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -162,31 +188,3 @@ export default function Signup(props: SignupProps) {
     </section>
   );
 }
-
-const SignupDefaults: SignupProps = {
-  logo: {
-    src: "https://relume-assets.s3.amazonaws.com/logo-image.svg",
-    alt: "Logo text",
-  },
-  logoLink: "#",
-  title: "Sign Up",
-  description: "Create an account to start taking assessments",
-  signUpButton: {
-    title: "Sign up",
-  },
-  signUpWithGoogleButton: {
-    variant: "secondary",
-    title: "Sign up with Google",
-    iconLeft: <BiLogoGoogle className="size-6" />,
-  },
-  image: {
-    src: "https://relume-assets.s3.amazonaws.com/placeholder-image.svg",
-    alt: "Placeholder image",
-  },
-  logInText: "Already have an account?",
-  logInLink: {
-    text: "Log in",
-    url: "/login",
-  },
-  footerText: "© 2024 ProctorWeb",
-};
