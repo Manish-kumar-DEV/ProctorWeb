@@ -29,7 +29,36 @@ type Props = {
 };
 
 export type LoginProps = React.ComponentPropsWithoutRef<"section"> & Props;
-export default function Login(props: LoginProps) {
+
+const LoginDefaults: LoginProps = {
+  logo: {
+    src: "https://relume-assets.s3.amazonaws.com/logo-image.svg",
+    alt: "Logo text",
+  },
+  signUpText: "Don't have an account?",
+  signUpLink: {
+    text: "Sign up",
+    url: "/signup",
+  },
+  title: "Log In",
+  description: "Lorem ipsum dolor sit amet adipiscing elit.",
+  logInButton: {
+    title: "Log in",
+  },
+  logInWithGoogleButton: {
+    variant: "secondary",
+    title: "Log in with Google",
+    iconLeft: <BiLogoGoogle className="size-6" />,
+  },
+  forgotPassword: {
+    text: "Forgot your password?",
+    url: "#",
+  },
+  footerText: "© 2024 ProctorWeb",
+};
+
+export default function Login() {
+  const props = LoginDefaults;
   const {
     logo,
     signUpText,
@@ -163,30 +192,3 @@ export default function Login(props: LoginProps) {
     </section>
   );
 }
-
-export const LoginDefaults: LoginProps = {
-  logo: {
-    src: "https://relume-assets.s3.amazonaws.com/logo-image.svg",
-    alt: "Logo text",
-  },
-  signUpText: "Don't have an account?",
-  signUpLink: {
-    text: "Sign up",
-    url: "/signup",
-  },
-  title: "Log In",
-  description: "Lorem ipsum dolor sit amet adipiscing elit.",
-  logInButton: {
-    title: "Log in",
-  },
-  logInWithGoogleButton: {
-    variant: "secondary",
-    title: "Log in with Google",
-    iconLeft: <BiLogoGoogle className="size-6" />,
-  },
-  forgotPassword: {
-    text: "Forgot your password?",
-    url: "#",
-  },
-  footerText: "© 2024 ProctorWeb",
-};
