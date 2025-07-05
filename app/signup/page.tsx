@@ -163,7 +163,7 @@ export default function Signup(props: SignupProps) {
   );
 }
 
-export const SignupDefaults: SignupProps = {
+const SignupDefaults: SignupProps = {
   logo: {
     src: "https://relume-assets.s3.amazonaws.com/logo-image.svg",
     alt: "Logo text",
